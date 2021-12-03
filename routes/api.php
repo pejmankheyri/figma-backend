@@ -1,6 +1,9 @@
 <?php
 use Illuminate\Support\Facades\Route;
 
+Route::get('me', [
+    App\Http\Controllers\MeController::class, 'getMe'
+]);
 
 // Route group for authenticater users only
 Route::group(['middleware' => ['auth:api']], function () {
