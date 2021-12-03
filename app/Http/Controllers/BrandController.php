@@ -10,7 +10,7 @@ class BrandController extends Controller
 {
     public function index()
     {
-        $teams = Brand::paginate(10);
+        $teams = Brand::orderBy('id', 'desc')->paginate(10);
         return BrandResource::collection($teams);
     }
 
