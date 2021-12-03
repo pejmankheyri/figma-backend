@@ -9,6 +9,8 @@ class Cmodel extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function brand()
     {
         return $this->belongsTo(Brand::class);

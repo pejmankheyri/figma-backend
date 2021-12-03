@@ -9,6 +9,8 @@ class Brand extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function models()
     {
         return $this->hasMany(Cmodel::class);
