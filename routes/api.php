@@ -5,7 +5,7 @@ Route::get('me', [
     App\Http\Controllers\MeController::class, 'getMe'
 ]);
 
-// Route group for authenticater users only
+// Route group for authenticated users only
 Route::group(['middleware' => ['auth:api']], function () {
     Route::post('logout', [
         App\Http\Controllers\Auth\LoginController::class, 'logout'
