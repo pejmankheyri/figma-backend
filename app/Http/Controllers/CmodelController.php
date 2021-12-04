@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BrandResource;
 use App\Http\Resources\ModelResource;
 use App\Models\Brand;
 use App\Models\Cmodel;
@@ -14,21 +15,22 @@ class CmodelController extends Controller
     {
         $brand = Brand::findOrFail($id);
 
-        $models = Cmodel::where('brand_id', $id)->get();
+        $models = Cmodel::where('brand_id', $id)->orderBy('id', 'desc')->get();
 
         return ModelResource::collection($models);
     }
 
-    public function store(Request $request, $id)
+    public function store(Request $request)
     {
-        $brand = Brand::findOrFail($id);
-
         $this->validate($request, [
+            'brand_id' => ['required'],
             'name' => ['required', 'string', 'max:40']
         ]);
 
+        $brand = Brand::findOrFail($request->brand_id);
+
         $model = Cmodel::create([
-            'brand_id' => $id,
+            'brand_id' => $request->brand_id,
             'name' => $request->name,
         ]);
 
@@ -56,14 +58,13 @@ class CmodelController extends Controller
 
         $model->delete();
 
-        return response()->json(['message' => 'model deleted successfully!'], 200);
+        return new ModelResource($model);
     }
 
     public function search(Request $request)
     {
         $search = Brand::select(
             "brands.id",
-            "brands.name",
         )
             ->leftJoin("cmodels", "cmodels.brand_id", "=", "brands.id")
             ->where('brands.name', 'like', '%' . $request->s . '%')
@@ -71,6 +72,7 @@ class CmodelController extends Controller
             ->groupBy('brands.id')
             ->get();
 
-        return $search;
+        $brands = Brand::whereIn('id', $search)->paginate(10);
+        return BrandResource::collection($brands);
     }
 }

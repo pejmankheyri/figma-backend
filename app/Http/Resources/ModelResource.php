@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Brand;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ModelResource extends JsonResource
@@ -17,7 +18,7 @@ class ModelResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'brand_id' => $this->brand_id,
+            'brand' => Brand::where('id', $this->brand_id)->first(),
             'create_dates' => [
                 'created_at_human' => $this->created_at->diffForHumans(),
                 'created_at' => $this->created_at

@@ -27,7 +27,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('brand/{id}/models', [
         App\Http\Controllers\CmodelController::class, 'index'
     ]);
-    Route::post('brand/{id}/model', [
+    Route::post('model', [
         App\Http\Controllers\CmodelController::class, 'store'
     ]);
     Route::put('model/{id}', [
